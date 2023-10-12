@@ -8,11 +8,8 @@ import pyproj
 import warnings
 warnings.filterwarnings("ignore")
 
-#plt.rcParams['figure.figsize']=(12,10)
-#plt.rcParams['font.size']=12
-
 fixed = 'https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/'
-url = '{}{}'.format(fixed,'qoe_ewcs_7b3')
+url = '{}{}'.format(fixed,'lfsa_ehomp')
 metadata = requests.get(url).json()
 #print(metadata['label'])
 data = pandas.Series(metadata['value']).rename(index=int).sort_index()
@@ -24,8 +21,8 @@ structure = [pandas.DataFrame({key:val for key,val in metadata['dimension'][dim]
 data.index = pandas.MultiIndex.from_product(structure,names=metadata['id'])
 mydata = data.reset_index()
 mydata = mydata[mydata.sex=='Total']
-mydata = mydata[mydata.age=='From 25 to 64 years']
-mydata = mydata[mydata.time=='2015']
+mydata = mydata[mydata.age=='From 20 to 64 years']
+mydata = mydata[mydata.frequenc=='Usually']
 mydata = mydata[['geo',0]]
 mydata.rename(columns={'geo':'ADMIN'},inplace=True)
 mydata.rename(columns={0:'percentage'},inplace=True)
@@ -34,9 +31,10 @@ world = geopandas.read_file('/content/drive/MyDrive/2024-HRM/ne_110m_admin_0_cou
 polygon = Polygon([(-25,35),(40,35),(40,75),(-25,75)])
 europe = geopandas.clip(world,polygon)
 
-mydata = mydata.merge(europe,on='ADMIN',how='right')
-mydata = geopandas.GeoDataFrame(mydata,geometry='geometry')
+mydata1 = mydata[mydata.year=='2022']
+mydata1 = mydata1.merge(europe,on='ADMIN',how='right')
+mydata1 = geopandas.GeoDataFrame(mydata1,geometry='geometry')
 fig,ax = plt.subplots(1,figsize=(10,10))
-mydata.plot(column='percentage',alpha=0.8,cmap='cool',ax=ax,legend=True)
+mydata1.plot(column='percentage',alpha=0.8,cmap='cool',ax=ax,legend=True)
 ax.set_title('Percentage of employed persons from 25 to 64 years\nthinking they do useful work (source: Eurostat)')
 ax.axis('off')
