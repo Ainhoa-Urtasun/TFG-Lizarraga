@@ -21,6 +21,7 @@ structure = [pandas.DataFrame({key:val for key,val in metadata['dimension'][dim]
 data.index = pandas.MultiIndex.from_product(structure,names=metadata['id'])
 mydata = data.reset_index()
 print(mydata)
+mydata = mydata[mydata.wstatus=='Employed persons']
 mydata = mydata[mydata.sex=='Total']
 mydata = mydata[mydata.age=='From 20 to 64 years']
 mydata = mydata[mydata.frequenc=='Usually']
