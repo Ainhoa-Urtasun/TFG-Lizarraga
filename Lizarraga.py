@@ -33,7 +33,7 @@ polygon = Polygon([(-25,35),(40,35),(40,75),(-25,75)])
 europe = geopandas.clip(world,polygon)
 
 mydata1 = mydata[mydata.time=='2022']
-table = mydata.pivot(index='ADMIN',columns='time',values=['percentage']).reset_index()
+table = mydata.pivot(index='ADMIN',columns='time',values=['percentage'])
 table.columns = table.columns.droplevel(level=0)
 table.rename(columns={'ADMIN':'GEO'},inplace=True)
 
