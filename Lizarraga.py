@@ -23,7 +23,7 @@ mydata = data.reset_index()
 mydata = mydata[mydata.sex=='Total']
 mydata = mydata[mydata.age=='From 20 to 64 years']
 mydata = mydata[mydata.frequenc=='Usually']
-mydata = mydata[['geo','year',0]]
+mydata = mydata[['geo','time',0]]
 mydata.rename(columns={'geo':'ADMIN'},inplace=True)
 mydata.rename(columns={0:'percentage'},inplace=True)
 
@@ -31,7 +31,7 @@ world = geopandas.read_file('/content/TFG-Lizarraga/ne_110m_admin_0_countries.zi
 polygon = Polygon([(-25,35),(40,35),(40,75),(-25,75)])
 europe = geopandas.clip(world,polygon)
 
-mydata1 = mydata[mydata.Year=='2022']
+mydata1 = mydata[mydata.time=='2022']
 mydata1 = mydata1.merge(europe,on='ADMIN',how='right')
 mydata1 = geopandas.GeoDataFrame(mydata1,geometry='geometry')
 fig,ax = plt.subplots(1,figsize=(10,10))
