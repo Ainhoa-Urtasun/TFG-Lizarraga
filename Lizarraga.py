@@ -33,7 +33,7 @@ polygon = Polygon([(-25,35),(40,35),(40,75),(-25,75)])
 europe = geopandas.clip(world,polygon)
 
 mydata1 = mydata[mydata.time=='2022']
-table = mydata.pivot(index=None,columns='time',values=['percentage'])
+table = mydata.pivot(index='ADMIN',columns='time',values=['percentage'])
 
 mydata1 = mydata1.merge(europe,on='ADMIN',how='right')
 mydata1 = geopandas.GeoDataFrame(mydata1,geometry='geometry')
