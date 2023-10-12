@@ -36,6 +36,8 @@ mydata1 = mydata[mydata.time=='2022']
 table = mydata.pivot(index='ADMIN',columns='time',values=['percentage'])
 table.columns = table.columns.droplevel(level=0)
 table = table.reset_index()
+table = table.drop('time',axis=1)
+table.rename(columns={'ADMIN':'GEO'},inplace=True)
 
 mydata1 = mydata1.merge(europe,on='ADMIN',how='right')
 mydata1 = geopandas.GeoDataFrame(mydata1,geometry='geometry')
