@@ -20,7 +20,6 @@ data = data.reindex(range(0,n),fill_value=0)
 structure = [pandas.DataFrame({key:val for key,val in metadata['dimension'][dim]['category'].items()}).sort_values('index')['label'].values for dim in metadata['id']]
 data.index = pandas.MultiIndex.from_product(structure,names=metadata['id'])
 mydata = data.reset_index()
-print(mydata)
 mydata = mydata[mydata.wstatus=='Employed persons']
 mydata = mydata[mydata.sex=='Total']
 mydata = mydata[mydata.age=='From 20 to 64 years']
@@ -34,6 +33,8 @@ polygon = Polygon([(-25,35),(40,35),(40,75),(-25,75)])
 europe = geopandas.clip(world,polygon)
 
 mydata1 = mydata[mydata.time=='2022']
+table = mydata.pivot(index=None,columns='time')
+
 mydata1 = mydata1.merge(europe,on='ADMIN',how='right')
 mydata1 = geopandas.GeoDataFrame(mydata1,geometry='geometry')
 fig,ax = plt.subplots(1,figsize=(10,10))
